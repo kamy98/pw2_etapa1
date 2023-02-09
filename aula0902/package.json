@@ -1,0 +1,14 @@
+{
+  "name": "aula0902",
+  "version": "1.0.0",
+  "description": "Aula de pw 2fev09",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pw2"
+  ],
+  "author": "kamy",
+  "license": "MIT"
+}
