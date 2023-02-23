@@ -1,0 +1,14 @@
+{
+  "name": "aula2302",
+  "version": "1.0.0",
+  "description": "aula2302",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kamily e Joao",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
