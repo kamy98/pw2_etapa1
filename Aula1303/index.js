@@ -1,48 +1,41 @@
-//#region Modulos Externos 
+//#region Modulos Externos
 const chalk = require('chalk')
 const inquirer = require('inquirer')
 //#endregion
 
-
 //#region Modulos Internos
 const fs = require('fs')
-const {console} = require ('console')
 //#endregion
 
 operation()
-//#region Operaçoes Inicias
-function operation() {
+//#region Operações Iniciais
+function operation(){
     inquirer.prompt([
         {
-            type: 'list',
-            name: 'action',
-            message: 'O que deseja Fazer',
-            choices: [
-                'Crian Conta',
+            type:'list',
+            name:'action',
+            message:'O que deseja fazer?',
+            choices:[
+                'Criar conta',
                 'Consultar Saldo',
                 'Depositar',
                 'Sacar',
                 'Sair'
             ]
         }
-    ]).then((answer) => {
+    ]).then((answer) =>{
         const action = answer['action']
-
-        if (action === 'Criar Conta') {
-            console.log('Criando Sua Conta')
+        if(action === 'Criar conta'){
+            console.log('Criando sua conta')
             createAccount()
-
-        } else if (action === 'Consultar Saldo') {
-            console.log("Consultando Saldo")
-
-        } else if (action === 'Depositar') {
+        }else if(action === 'Consultar Saldo'){
+            console.log('Consultando saldo')
+        }else if(action === 'Depositar'){
             console.log('Depositando')
-
-        } else if (action === 'Sacar') {
+        }else if(action === 'Sacar'){
             console.log('Sacando')
-
-        } else if (action === 'Sair') {
-            console.log(chalk.bgBlue.white('Obrigado Por Ultilizar O Contas ETEC'))
+        }else if(action === 'Sair'){
+            console.log(chalk.bgBlue.black('Obrigado por utilizar o Contas ETEC.'))
             setTimeout(() => {
                 process.exit()
             }, 1500);
@@ -51,43 +44,86 @@ function operation() {
 }
 //#endregion
 
-//#region criacao de contas
-function createAccount() {
-    console.log(chalk.bgBlue.white("parabens por escolher esse banco"))
-    console.log(chalk.green("escolha as opçoes de conta"))
+
+//#region Criação de Contas
+function createAccount(){
+    console.log(chalk.bgGreen.black('Parabéns por escolher o Banco ETEC'))
+    console.log(chalk.green('Escolha as opções de conta:'))
 
     buildAccount()
-
 }
-function buildAccount() {
+function buildAccount(){
     inquirer.prompt([
         {
-            name: 'accountName',
-            message: 'entre com nome da sua conta'
+            name:'accountName',
+            message:'Entre com nome da sua conta:'
         }
     ]).then((answer) => {
         console.info(answer['accountName'])
         const accountName = answer['accountName']
-        if (!fs.existsSync('accounts')) {
+        if(!fs.existsSync('accounts')){
             fs.mkdirSync('accounts')
         }
-        if (fs.existsSync(`accounts/${accountName}.json`)) {
+
+        if(fs.existsSync(`accounts/${accountName}.json`)){
             console.log(
-                chalk.bgCyan.black('esta conta ja existe!')
+                chalk.bgRed.black('Esta conta já existe!')
             )
-            buildAccount()
+            buildAccount(accountName)
+            return
         }
+
         fs.writeFileSync(
             `accounts/${accountName}.json`,
-            '("balance: 0")',
-            function (err) {
+            '{"balance":0}',
+            function (err){
                 console.error(err)
             }
-
         )
 
-        console.info(chalk.green("Parabens, sua conta esta pronta"))
+        console.info(chalk.green('Parabéns, sua conta está pronta!'))
         operation()
     })
 }
-//#endregion 
+//#endregion
+
+
+//#region Deposito na Conta
+ function deposit(){
+    inquirer.prompt([
+        {
+            name: "accountname",
+            message: "Qual conta deseja Depositar ?"
+        }
+    ]).then((answer) =>{
+        const accountName = answer['accountname']
+
+        if(!checkAccount(accountName)){
+            return deposit()
+        }
+
+        inquirer.prompt([
+            {
+                name: "amount",
+                message: "Quanto deseja Depositar ?"
+            }
+        ]).then((answer) =>{
+            const amount = answer['amount']
+
+            addAmount(accountName, amount)
+            settimeout(() => {
+                operation()
+
+            }, 1000);
+        })
+    }) 
+
+
+ }
+function checkAccount(accountName){
+    if(fs.existsSync(`accounts/${accountName}.json`)){
+        return false
+    }
+        return true
+}
+//#endregion
