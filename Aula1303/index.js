@@ -31,6 +31,7 @@ function operation() {
             createAccount()
         } else if (action === 'Consultar Saldo') {
             console.log('Consultando saldo')
+            accountBalance()
         } else if (action === 'Depositar') {
             console.log('Depositando')
             deposit()
@@ -148,5 +149,73 @@ function getAccount(accountName) {
             flag: 'r'
         })
     return JSON.parse(accountJSON)
+}
+//#endregion
+
+//#region Consultar Saldo 
+function accountBalance() {
+    inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'Qual conta deseja verificar o Saldo ?'
+        }
+
+    ]).then((answer) => {
+
+        const accountName = answer['accountName']
+
+        if (!checkAccount(accountName)) {
+            return accountBalance()
+        }
+
+        const accountData = getAccount(accountName)
+        if (accountData.balance > 0) {
+            console.log(chalk.green(`O saldo da conta: R$ ${accountData.balance}.`))
+        } else {
+            console.log(chalk.red(`O saldo da conta: R$ ${accountData.balance}.`))
+        }
+
+        setTimeout(() => {
+            operation()
+        }, 1000)
+    })
+
+}
+
+//#endregion
+
+//#region Saque na Conta
+function whithdraw() {
+    inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'qual conta efetuara o saque?'
+        }
+    ]).then((answer) => {
+        const accountName = answer['accountName']
+        if (!checkAccount(accountName)) {
+            return whithdraw()
+        }
+            inquirer.prompt([
+                {
+                    name: 'amount',
+                    message: 'Quanto deseja sacar ?'
+                }
+            ]).then((answer) => {
+                const amount = answer['amount']
+
+                removeAmount (accountName, amount)
+                operation()
+            })
+    })
+}
+
+function removeAmount(accountName, amount){
+    const accountData = getAccount(accountName)
+    if(!amount){
+        console.log(chalk.bgRed.black('O valor Precisa ser Informado'))
+        return whithdraw()
+    }
+    
 }
 //#endregion
