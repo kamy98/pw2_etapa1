@@ -1,0 +1,35 @@
+
+CONFIGURAR 
+
+git config --global user.name "[nome]"
+
+git config --global user.email "[email]"
+
+
+
+NODE JS E JS / INSTALL MODULES
+
+npm install chalk@4.1.2
+
+npm install inquirer@6.0.0
+
+
+CRIAR REPOSITÓRIO 
+
+git init [nome do projeto]
+
+git clone ["url"]
+
+
+SINCRONIZE MUDANÇAS && MUDANÇAS EM GRUPO
+
+git branch
+
+git push [alias] [branch]
+envia os branchs
+
+git pull
+incorpora as mudanças
+
+DESFAZER COMMITS
+git reset [commit]
